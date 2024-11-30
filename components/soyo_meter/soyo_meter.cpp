@@ -43,7 +43,7 @@ namespace esphome
                 }
 
                 uint8_t checksum = soyo_meter_checksum(response);
-                if (response[8] != checksum)
+                if (response[7] != checksum)
                 {
                     ESP_LOGW(TAG, "SOYO Meter Checksum doesn't match: 0x%02X!=0x%02X", response[8], checksum);
                     this->status_set_warning();
