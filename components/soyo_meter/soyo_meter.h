@@ -21,6 +21,8 @@ namespace esphome
             void set_power_sensor(sensor::Sensor *power_sensor) { power_sensor_ = power_sensor; }
 
         protected:
+		
+			void init_uart();
             sensor::Sensor *power_sensor_{nullptr};
         };
     }  // namespace soyo_meter_serial
