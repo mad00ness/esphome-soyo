@@ -66,10 +66,9 @@ namespace esphome
 				return;
 			}
 			
-			uint8_t response[SM_RESPONSE_LENGTH];
-
             while (this->available() >= SM_RESPONSE_LENGTH)
 			{
+				uint8_t response[SM_RESPONSE_LENGTH];
 				this->read_array(response, SM_RESPONSE_LENGTH);
 
                 if (soyo_meter_preamble_check(response))
