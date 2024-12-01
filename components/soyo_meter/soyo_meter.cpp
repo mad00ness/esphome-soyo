@@ -105,11 +105,11 @@ namespace esphome
 			
 			if (update_state)
 			{
-				ESP_LOGD(TAG, "SOYO Meter Power=%uWatt", power);
+				ESP_LOGD(TAG, "SOYO Meter Power=%uWatt", average_update_power);
 				
                 if (this->power_sensor_ != nullptr)
                 {
-                    this->power_sensor_->publish_state(power);
+                    this->power_sensor_->publish_state(average_update_power);
                     this->status_clear_warning();
                 }
 			}
