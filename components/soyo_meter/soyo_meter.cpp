@@ -22,23 +22,51 @@ namespace esphome
         {
             return (data[0] != 0x36 && data[1] != 0x86);
         }
+		
+		void SoyoMeterUart::init_uart()
+		{
+			if (this->available() < 2 * SM_RESPONSE_LENGTH + 1) return;
+			uint8_t init[2];
+			init[0] = this->read();
+			init[1] = this->read();
+			bool init = false;
+			
+			while (!init)
+			{
+				if (!soyo_meter_preamble_check(init))
+				{
+					init[0] = init[1];
+					init[1] = this->read();
+				}
+				else
+				{
+					this->read();
+					this->read();
+					this->read();
+					this->read();
+					this->read();
+					this->read();
+					init = true;
+				}
+			}
+		}
 
         void SoyoMeterUart::setup()
         {
-
+			init_uart();
         }
 
         void SoyoMeterUart::update()
         {
             uint8_t response[SM_RESPONSE_LENGTH];
 
-            if (this->read_array(response, SM_RESPONSE_LENGTH))
+            while (this->read_array(response, SM_RESPONSE_LENGTH))
             {
                 if (soyo_meter_preamble_check(response))
                 {
                     ESP_LOGW(TAG, "Invalid preamble from SOYO Meter!");
                     this->status_set_warning();
-                    // to do find first preamble for data normal read
+                    init_uart();
                     return;
                 }
 				
