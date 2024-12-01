@@ -45,8 +45,8 @@ namespace esphome
 				}
 				else
 				{
-					uint8_t part[6];
-					this->read_array(part, 6);
+					uint8_t part[5];
+					this->read_array(part, 5);
 					init_state = true;
 				}
 			}
