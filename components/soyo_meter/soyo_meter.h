@@ -22,6 +22,7 @@ namespace esphome
 
         protected:
 		
+			bool init_state = false;
 			void init_uart();
             sensor::Sensor *power_sensor_{nullptr};
         };

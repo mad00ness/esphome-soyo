@@ -14,7 +14,10 @@ namespace esphome
         uint8_t soyo_meter_checksum(const uint8_t *data)
         {
             uint8_t sum = 0;
-            for (uint8_t i = 1; i < SM_RESPONSE_LENGTH; i++) sum += data[i];
+            for (uint8_t i = 1; i < SM_RESPONSE_LENGTH; i++)
+			{
+				sum += data[i];
+			}
             return 0xFF - sum;
         }
 
@@ -25,11 +28,12 @@ namespace esphome
 		
 		void SoyoMeterUart::init_uart()
 		{
+			init_state = false;
+			
 			if (this->available() < 2 * SM_RESPONSE_LENGTH + 1) return;
 			uint8_t init[2];
 			init[0] = this->read();
 			init[1] = this->read();
-			bool init_state = false;
 			
 			while (!init_state)
 			{
@@ -53,12 +57,19 @@ namespace esphome
 
         void SoyoMeterUart::setup()
         {
-			init_uart();
+
         }
 
         void SoyoMeterUart::update()
         {
-            uint8_t response[SM_RESPONSE_LENGTH];
+            if (!init_state)
+			{
+				this->status_set_warning();
+				init_uart();
+				return;
+			}
+			
+			uint8_t response[SM_RESPONSE_LENGTH];
 
             while (this->read_array(response, SM_RESPONSE_LENGTH))
             {
