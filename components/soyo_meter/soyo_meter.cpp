@@ -13,17 +13,12 @@ namespace esphome
 
         uint8_t soyo_meter_checksum(const uint8_t *data)
         {
-            ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
-			data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-			
 			uint16_t sum = 0;
             for (uint8_t i = 1; i < SM_RESPONSE_LENGTH - 1; i++)
 			{
 				sum += data[i];
 			}
-			
-			ESP_LOGW(TAG, "SOYO Meter Checksum uint16_t: 0x%02X", sum);
-			ESP_LOGW(TAG, "SOYO Meter Checksum uint8_t: 0x%02X", uint8_t(sum));
+
             return (0xFF - uint8_t(sum));
         }
 
@@ -73,8 +68,10 @@ namespace esphome
 			
 			uint8_t response[SM_RESPONSE_LENGTH];
 
-            while (this->read_array(response, SM_RESPONSE_LENGTH))
-            {
+            while (this->available() >= SM_RESPONSE_LENGTH)
+			{
+				this->read_array(response, SM_RESPONSE_LENGTH))
+
                 if (soyo_meter_preamble_check(response))
                 {
                     ESP_LOGW(TAG, "Invalid preamble from SOYO Meter!");
