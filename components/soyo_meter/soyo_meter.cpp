@@ -29,9 +29,9 @@ namespace esphome
 			uint8_t init[2];
 			init[0] = this->read();
 			init[1] = this->read();
-			bool init = false;
+			bool init_state = false;
 			
-			while (!init)
+			while (!init_state)
 			{
 				if (!soyo_meter_preamble_check(init))
 				{
@@ -46,7 +46,7 @@ namespace esphome
 					this->read();
 					this->read();
 					this->read();
-					init = true;
+					init_state = true;
 				}
 			}
 		}
