@@ -54,7 +54,7 @@ namespace esphome
 
         void SoyoMeterUart::setup()
         {
-
+			SoyoMeterUart::update();
         }
 
         void SoyoMeterUart::update()
@@ -65,6 +65,9 @@ namespace esphome
 				init_uart();
 				return;
 			}
+			
+			bool update_state = false;
+			uint16_t average_update_power = 0;
 			
             while (this->available() >= SM_RESPONSE_LENGTH)
 			{
@@ -91,14 +94,25 @@ namespace esphome
                 }
 
                 const uint16_t power = (uint16_t(response[4]) << 8) | response[5];
-
-                ESP_LOGD(TAG, "SOYO Meter Power=%uWatt", power);
+				
+				if (update_state)
+					average_update_power = (average_update_power + power) / 2;
+				else
+					average_update_power = power;
+				
+				update_state = true;
+            }
+			
+			if (update_state)
+			{
+				ESP_LOGD(TAG, "SOYO Meter Power=%uWatt", power);
+				
                 if (this->power_sensor_ != nullptr)
                 {
                     this->power_sensor_->publish_state(power);
                     this->status_clear_warning();
                 }
-            }
+			}
         }
 
         float SoyoMeterUart::get_setup_priority() const
