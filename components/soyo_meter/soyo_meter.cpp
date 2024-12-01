@@ -16,14 +16,15 @@ namespace esphome
             ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
 			data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
 			
-			uint8_t sum = 0;
+			uint16_t sum = 0;
             for (uint8_t i = 1; i < SM_RESPONSE_LENGTH; i++)
 			{
 				sum += data[i];
 			}
 			
-			ESP_LOGW(TAG, "SOYO Meter Checksum: 0x%02X", sum);
-            return (0xFF - sum);
+			ESP_LOGW(TAG, "SOYO Meter Checksum uint16_t: 0x%02X", sum);
+			ESP_LOGW(TAG, "SOYO Meter Checksum uint8_t: 0x%02X", uint8_t(sum));
+            return (0xFF - uint8_t(sum));
         }
 
         bool soyo_meter_preamble_check(const uint8_t *data)
