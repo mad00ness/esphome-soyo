@@ -23,12 +23,12 @@ namespace esphome
             return (data[0] != 0x36 && data[1] != 0x86);
         }
 
-        void SMUComponent::setup()
+        void SoyoMeterUart::setup()
         {
 
         }
 
-        void SMUComponent::update()
+        void SoyoMeterUart::update()
         {
             uint8_t response[SM_RESPONSE_LENGTH];
 
@@ -62,12 +62,12 @@ namespace esphome
             }
         }
 
-        float SMUComponent::get_setup_priority() const
+        float SoyoMeterUart::get_setup_priority() const
         {
             return setup_priority::DATA;
         }
 
-        void SMUComponent::dump_config()
+        void SoyoMeterUart::dump_config()
         {
             ESP_LOGCONFIG(TAG, "SOYO Meter:");
             LOG_SENSOR("  ", "Power", this->power_sensor_);

@@ -9,7 +9,7 @@ namespace esphome
 {
     namespace soyo_meter
     {
-        class SMUComponent : public PollingComponent, public uart::UARTDevice
+        class SoyoMeterUart : public PollingComponent, public uart::UARTDevice
         {
         public:
             float get_setup_priority() const override;
