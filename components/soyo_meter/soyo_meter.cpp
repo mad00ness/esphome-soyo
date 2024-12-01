@@ -20,7 +20,7 @@ namespace esphome
 
         bool soyo_meter_preamble_check(const uint8_t *data)
         {
-            return (data[0] != 0x36 && data[1] != 0x86);
+            return (data[0] != 0x24 && data[1] != 0x56);
         }
 		
 		void SoyoMeterUart::init_uart()
