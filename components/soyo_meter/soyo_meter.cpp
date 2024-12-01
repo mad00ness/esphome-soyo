@@ -81,7 +81,7 @@ namespace esphome
 					response[0], response[1], response[2], response[3], response[4], response[5], response[6], response[7]);
                     this->status_set_warning();
                     init_uart();
-                    return;
+                    continue;
                 }
 				
 				uint8_t& rchksum = response[7];
@@ -90,7 +90,7 @@ namespace esphome
                 {
                     ESP_LOGW(TAG, "SOYO Meter Checksum doesn't match: 0x%02X!=0x%02X", rchksum, checksum);
                     this->status_set_warning();
-                    return;
+                    continue;
                 }
 
                 const uint16_t power = (uint16_t(response[4]) << 8) | response[5];
