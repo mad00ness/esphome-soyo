@@ -18,7 +18,8 @@ namespace esphome
 			{
 				sum += data[i];
 			}
-            return 0xFF - sum;
+			ESP_LOGW(TAG, "SOYO Meter Checksum: 0x%02X", sum);
+            return (0xFF - sum);
         }
 
         bool soyo_meter_preamble_check(const uint8_t *data)
@@ -31,25 +32,21 @@ namespace esphome
 			init_state = false;
 			
 			if (this->available() < 2 * SM_RESPONSE_LENGTH + 1) return;
+			
 			uint8_t init[2];
-			init[0] = this->read();
-			init[1] = this->read();
+			this->read_array(init, 2);
 			
 			while (!init_state)
 			{
 				if (!soyo_meter_preamble_check(init))
 				{
 					init[0] = init[1];
-					init[1] = this->read();
+					this->read_array(init[1], 1);
 				}
 				else
 				{
-					this->read();
-					this->read();
-					this->read();
-					this->read();
-					this->read();
-					this->read();
+					uint8_t part[6];
+					this->read_array(part, 6);
 					init_state = true;
 				}
 			}
@@ -88,6 +85,8 @@ namespace esphome
                 if (rchksum != checksum)
                 {
                     ESP_LOGW(TAG, "SOYO Meter Checksum doesn't match: 0x%02X!=0x%02X", rchksum, checksum);
+					ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
+					response[0], response[1], response[2], response[3], response[4], response[5], response[6], response[7]);
                     this->status_set_warning();
                     return;
                 }
