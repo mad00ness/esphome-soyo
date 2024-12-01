@@ -13,11 +13,15 @@ namespace esphome
 
         uint8_t soyo_meter_checksum(const uint8_t *data)
         {
-            uint8_t sum = 0;
+            ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
+			data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+			
+			uint8_t sum = 0;
             for (uint8_t i = 1; i < SM_RESPONSE_LENGTH; i++)
 			{
 				sum += data[i];
 			}
+			
 			ESP_LOGW(TAG, "SOYO Meter Checksum: 0x%02X", sum);
             return (0xFF - sum);
         }
@@ -85,8 +89,6 @@ namespace esphome
                 if (rchksum != checksum)
                 {
                     ESP_LOGW(TAG, "SOYO Meter Checksum doesn't match: 0x%02X!=0x%02X", rchksum, checksum);
-					ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
-					response[0], response[1], response[2], response[3], response[4], response[5], response[6], response[7]);
                     this->status_set_warning();
                     return;
                 }
