@@ -41,7 +41,7 @@ namespace esphome
 				if (!soyo_meter_preamble_check(init))
 				{
 					init[0] = init[1];
-					this->read_byte(init[1]);
+					this->read_byte(&init[1]);
 				}
 				else
 				{
