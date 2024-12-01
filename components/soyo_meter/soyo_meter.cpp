@@ -70,7 +70,7 @@ namespace esphome
 
             while (this->available() >= SM_RESPONSE_LENGTH)
 			{
-				this->read_array(response, SM_RESPONSE_LENGTH))
+				this->read_array(response, SM_RESPONSE_LENGTH);
 
                 if (soyo_meter_preamble_check(response))
                 {
