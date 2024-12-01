@@ -65,14 +65,8 @@ namespace esphome
                 if (soyo_meter_preamble_check(response))
                 {
                     ESP_LOGW(TAG, "Invalid preamble from SOYO Meter!");
-					String debug;
-					debug+= String(response[0]);
-					for (int i = 1; i < 8; i++)
-					{
-						debug+= String(" ");
-						debug+= String(response[i]);
-					}
-					ESP_LOGW(TAG, debug);
+					ESP_LOGW(TAG, "SOYO Meter response:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X,
+					response[0], response[1], response[2], response[3], response[4], response[5], response[6], response[7]);
                     this->status_set_warning();
                     init_uart();
                     return;
