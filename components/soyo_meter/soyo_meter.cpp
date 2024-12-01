@@ -17,7 +17,7 @@ namespace esphome
 			data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
 			
 			uint16_t sum = 0;
-            for (uint8_t i = 1; i < SM_RESPONSE_LENGTH; i++)
+            for (uint8_t i = 1; i < SM_RESPONSE_LENGTH - 1; i++)
 			{
 				sum += data[i];
 			}
